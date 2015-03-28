@@ -1,0 +1,123 @@
+html, body {
+    margin: 0;
+    width: 380px;
+    color: #222222;
+    background: #eeeeee;
+    text-rendering: optimizeLegibility;
+    font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+hr {
+    border: 0;
+    border-top: solid 1px #ffffff;
+    background: #d1d1d1;
+    height: 1px;
+    margin: 20px 0;
+}
+
+#popup {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    position: absolute;
+    background: rgba(118, 118, 118, 0.25);
+    border-left: 1px solid rgba(118, 118, 118, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: rgba(118, 118, 118, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(118, 118, 118, 1.0);
+}
+
+a {
+    color: #222222;
+    text-decoration: none;
+}
+
+.game-header, .channel {
+    margin: 10px;
+    background: #fff;
+    position: relative;
+    box-shadow: 0px 1px 5px #a0a0a0;
+}
+
+.game-header {
+    width: 360px;
+    height: 72px;
+}
+
+.game-header img {
+    width: 120px;
+    height: 72px;
+}
+
+.game-header .title {
+    top: 0px;
+    left: 120px;
+    position: absolute;
+}
+
+.game-header .title h1 {
+    width: 240px;
+    height: 72px;
+    font-size: 28px;
+    line-height: 28px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.channel {
+    width: 360px;
+    height: 305px;
+}
+
+.channel img {
+    float: left;
+}
+
+.channel .info {
+    float: left;
+    width: 280px;
+    height: 80px;
+}
+
+.channel h2, h3 {
+    padding: 0;
+    margin: 10px;
+    font-weight: normal;
+}
+
+.channel h3 {
+    color: #666666;
+    font-size: inherit;
+}
+
+.channel .live {
+    bottom: 10px;
+    margin: 0;
+    color: #fff;
+    right: 10px;
+    padding: 3px;
+    background: #000;
+    position: absolute;
+    border-radius: 3px;
+    -o-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.channel .live img {
+    top: 2px;
+    padding-right: 3px;
+    position: relative;
+}
