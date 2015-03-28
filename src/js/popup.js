@@ -1,12 +1,7 @@
 window.popup = {
     buildPage: function() {
         var streams = chrome.extension.getBackgroundPage().streams;
-
-        if(streams.length > 0) {
-            this.showStreamers(streams);
-        } else {
-            document.body.innerHTML = '<p class="no-streams">Sorry, nobody is live at the moment.</p>';
-        }
+        this.showStreamers(streams);
     },
     showStreamers: function(streams) {
         var output = '';
@@ -86,7 +81,12 @@ function createImg(placeholder, link){
 
 $(document).ready(function(){
     if(chrome.extension.getBackgroundPage().authenticated) {
-        popup.buildPage();
+
+        if(chrome.extension.getBackgroundPage().streamersCount > 0) {
+            popup.buildPage();
+        } else {
+            document.body.innerHTML = '<p class="no-streams">Sorry, nobody is live at the moment.</p>';
+        }
     } else {
         document.body.innerHTML = '<img src="' + chrome.extension.getURL("img/connect_dark.png") + '" class="twitch-connect" href="#" />';
 
