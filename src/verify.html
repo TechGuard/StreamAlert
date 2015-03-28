@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Twitch Notify - Verification</title>
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            background: #6441A5;
+            color: #F1F1F1;
+            text-align: center;
+            text-rendering: optimizeLegibility;
+            font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        img {
+            margin-top: 20px;
+        }
+
+        #content {
+            width: 75%;
+            margin: 75px auto;
+        }
+
+        #success, #fail {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <img src="http://s.jtvnw.net/jtv_user_pictures/hosted_images/Twitch_Logo_White.png" width="300">
+    <h1>Twitch Notify</h1>
+
+    <div id="content">
+        <div id="success">
+            <h2>Verification Succeeded!</h2>
+            <p>TwitchNotify has successfully verified your Twitch account. From now on you'll receive notifications when a streamer goes live!</p>
+        </div>
+        <div id="fail">
+            <h2>Verification Failed.</h2>
+            <p>TwitchNotify was not able to verify your Twitch account. This extension will not work without Twitch verification.</p>
+        </div>
+    </div>
+
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/twitch.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/verify.js"></script>
+</body>
+</html>
