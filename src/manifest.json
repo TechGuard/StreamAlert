@@ -15,7 +15,7 @@
     "browser_action": {
         "default_icon": "img/icon-19-off.png",
         "default_title": "Twitch Notifications",
-        "default_popup": ""
+        "default_popup": "popup.html"
     },
     
     "background": {

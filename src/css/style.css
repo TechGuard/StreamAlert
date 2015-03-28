@@ -20,6 +20,18 @@ hr {
     overflow-x: hidden;
 }
 
+.twitch-connect {
+    margin: 20px 105px;
+    width: 170px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.no-streams {
+    text-align: center;
+    margin: 20px auto;
+}
+
 ::-webkit-scrollbar {
     width: 6px;
     position: absolute;

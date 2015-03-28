@@ -1,6 +1,8 @@
 
 // Variables
 var authenticated = false;
+var sendLoginRequest = true;
+
 var streams = {};
 var streamersCount = 0;
 var streamsHistory = [];
@@ -24,7 +26,6 @@ function updateStatus() {
         }
     }
 
-    chrome.browserAction.setPopup({ popup: popup });
     chrome.browserAction.setIcon({ 'path': 'img/' + img + '.png' });
 }
 
@@ -87,25 +88,33 @@ function update() {
 
         if (authenticated) {
             Twitch.api({url: 'streams/followed'}, function(err, data) {
-                if(err){
-                    console.error(err);
-                    return;
+                if(!err){
+                    updateStreams(data);
                 }
 
-                updateStreams(data);
                 updateStatus();
             });
-        } else {
-            Twitch.login({
-                popup: true,
-                scope: ['user_read'],
-                redirect_uri: chrome.extension.getURL('verify.html')
-            });
 
-            updateStatus();
+            return;
         }
 
-    })
+        if(sendLoginRequest) {
+            sendLoginRequest = false;
+
+            twitchLogin();
+        }
+
+        updateStatus();
+    });
+}
+
+// Handle login request
+function twitchLogin() {
+    Twitch.login({
+        popup: true,
+        scope: ['user_read'],
+        redirect_uri: chrome.extension.getURL('verify.html')
+    });
 }
 
 // Handle notifications
@@ -139,6 +148,7 @@ chrome.notifications.onButtonClicked.addListener(function(notificationId, button
 // Login event
 Twitch.events.addListener('auth.login', function() {
     authenticated = true;
+    sendLoginRequest = true;
     console.log("Authenticated: " + Twitch.getToken());
 });
 
