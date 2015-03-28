@@ -1,6 +1,7 @@
 
 // Variables
 var authenticated = false;
+var streams = {};
 var streamersCount = 0;
 
 
@@ -27,7 +28,39 @@ function updateStatus() {
 
 // Update streams
 function updateStreams(data) {
+    var newStreams = [];
+    var newStreamersCount = 0;
 
+    if(data.streams)
+    for(var stream in data.streams){
+        stream = data.streams[stream];
+
+        var channel = {
+            'name': stream.channel.display_name,
+            'status': stream.channel.status,
+            'logo': (stream.channel.logo === null ? "http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png" : stream.channel.logo),
+            'preview': stream.preview.medium,
+            'viewers': stream.viewers,
+            'url': stream.channel.url
+        };
+
+        if(channel['status'] == undefined){
+            channel['status'] = 'No description available.';
+        } else
+        if(channel['status'].length > 67){
+            channel['status'] = channel['status'].substring(0, 64) + '...';
+        }
+
+        if(!newStreams[stream.game]){
+            newStreams[stream.game] = [];
+        }
+
+        newStreamersCount++;
+        newStreams[stream.game].push(channel);
+    }
+
+    streams = newStreams;
+    streamersCount = newStreamersCount;
 }
 
 // Update tick
