@@ -3,6 +3,8 @@
 var authenticated = false;
 var streams = {};
 var streamersCount = 0;
+var streamsHistory = [];
+var notificationLinks = [];
 
 
 // Update popup window and icon
@@ -30,18 +32,20 @@ function updateStatus() {
 function updateStreams(data) {
     var newStreams = [];
     var newStreamersCount = 0;
+    var timestamp = new Date().getTime();
 
     if(data.streams)
     for(var stream in data.streams){
         stream = data.streams[stream];
 
         var channel = {
-            'name': stream.channel.display_name,
-            'status': stream.channel.status,
-            'logo': (stream.channel.logo === null ? "http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png" : stream.channel.logo),
-            'preview': stream.preview.medium,
-            'viewers': stream.viewers,
-            'url': stream.channel.url
+            id: stream.channel._id,
+            name: stream.channel.display_name,
+            status: stream.channel.status,
+            logo: (stream.channel.logo === null ? "http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_150x150.png" : stream.channel.logo),
+            preview: stream.preview.medium,
+            viewers: stream.viewers,
+            url: stream.channel.url
         };
 
         if(channel['status'] == undefined){
@@ -57,6 +61,17 @@ function updateStreams(data) {
 
         newStreamersCount++;
         newStreams[stream.game].push(channel);
+
+        // Send Notification
+        if(streamsHistory[channel.name] && timestamp - streamsHistory[channel.name] >= ALERT_IGNORE_TIME * 60 * 1000) {
+            delete streamsHistory[channel.name];
+        }
+
+        if(!streamsHistory[channel.name]) {
+            sendNotification(channel);
+        }
+
+        streamsHistory[channel.name] = timestamp;
     }
 
     streams = newStreams;
@@ -92,6 +107,34 @@ function update() {
 
     })
 }
+
+// Handle notifications
+function sendNotification(channel){
+    var notificationId = 'channel_live_' + channel.id;
+
+    chrome.notifications.create(notificationId, {
+        type: 'image',
+        iconUrl: channel.logo,
+        title: channel.name + ' is now live!',
+        message: channel.status,
+        imageUrl: channel.preview,
+        buttons: [ {
+            title: 'Watch',
+            iconUrl: 'img/icon-play.png'
+        } ]
+    }, function(){
+        notificationLinks[notificationId] = channel.url;
+    });
+}
+
+chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonIndex){
+    if(buttonIndex !== 0 || !notificationLinks[notificationId]){
+        return;
+    }
+
+    chrome.tabs.create({ 'url': notificationLinks[notificationId] });
+    chrome.notifications.clear(notificationId, function(){ });
+});
 
 // Login event
 Twitch.events.addListener('auth.login', function() {
