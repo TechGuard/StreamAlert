@@ -1,5 +1,6 @@
 
 // Variables
+var tickIntervalId = 0;
 var authenticated = false;
 var sendLoginRequest = true;
 
@@ -76,8 +77,6 @@ function updateStreams(data) {
 
 // Update tick
 function update() {
-    setTimeout(update, REFRESH_AMOUNT * 1000);
-
     Twitch.getStatus(function(err, status) {
         authenticated = status.authenticated;
 
@@ -110,6 +109,20 @@ function twitchLogin() {
         scope: ['user_read'],
         redirect_uri: chrome.extension.getURL('verify.html')
     });
+}
+
+// New verified session
+function verifiedSession(session){
+    Twitch._config.session = session;
+    Twitch.events.emit('auth.login');
+
+    restart();
+}
+
+function restart(){
+    clearInterval(tickIntervalId); // clear
+    tickIntervalId = setInterval(update, REFRESH_AMOUNT * 1000); // set
+    update(); // no delay
 }
 
 // Handle notifications
@@ -151,5 +164,6 @@ Twitch.events.addListener('auth.login', function() {
 Twitch.init({clientId: CLIENT_ID}, function(err, status) {
     console.log("Twitch SDK Initialized");
 
+    tickIntervalId = setInterval(update, REFRESH_AMOUNT * 1000);
     update();
 });
