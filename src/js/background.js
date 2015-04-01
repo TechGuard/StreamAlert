@@ -11,7 +11,6 @@ var notificationLinks = [];
 
 // Update popup window and icon
 function updateStatus() {
-    var popup = "";
     var img = 'icon-19-off';
 
     if(authenticated) {
@@ -19,10 +18,6 @@ function updateStatus() {
             img = 'icon-19-on';
         } else {
             img = 'icon-19-' + streamersCount;
-        }
-
-        if(streamersCount > 0){
-            popup = "popup.html";
         }
     }
 
