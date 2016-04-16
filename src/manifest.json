@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Twitch Notifications",
-    "short_name": "Twitch Notify",
+    "name": "Stream Alert",
+    "short_name": "StreamAlert",
     "author": "Robin van Nunen",
     "description": "Receive desktop notifications when a streamer goes live.",
     "version": "1.1.0",
