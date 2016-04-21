@@ -15,7 +15,7 @@ hr {
     margin: 12px 0;
 }
 
-#popup {
+body {
     overflow-y: scroll;
     overflow-x: hidden;
 }

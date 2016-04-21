@@ -1,3 +1,5 @@
+var popupElm = $('#popup');
+
 window.popup = {
     buildPage: function() {
         var streams = chrome.extension.getBackgroundPage().streams;
@@ -69,7 +71,7 @@ window.popup = {
             }
         }
 
-        document.body.innerHTML = output + '<div id="title-resizer" class="game-header"><div class="title"><h1>Undefined</h1></div></div>';
+        popupElm.html(output + '<div id="title-resizer" class="game-header"><div class="title"><h1>Undefined</h1></div></div>');
 
         setTimeout(function() {
             popup.loadImages();
@@ -140,10 +142,10 @@ $(document).ready(function(){
         if(chrome.extension.getBackgroundPage().streamersCount > 0) {
             popup.buildPage();
         } else {
-            document.body.innerHTML = '<p class="no-streams">There are no streamers live right now.</p>';
+            popupElm.html('<p class="no-streams">There are no streamers live right now.</p>');
         }
     } else {
-        document.body.innerHTML = '<img src="' + getURL("img/connect_dark.png") + '" class="twitch-connect" href="#" />';
+        popupElm.html('<img src="' + getURL("img/connect_dark.png") + '" class="twitch-connect" href="#" />');
 
         $('.twitch-connect').click(function() {
             chrome.extension.getBackgroundPage().twitchLogin();
