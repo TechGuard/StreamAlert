@@ -1,82 +1,137 @@
 window.popup = {
     buildPage: function() {
         var streams = chrome.extension.getBackgroundPage().streams;
-        this.showStreamers(streams);
+        var settings = {
+            preview: true,
+            category: true,
+            viewcount: true
+        };
+        popup.showStreamers(streams, settings);
     },
-    showStreamers: function(streams) {
+    showStreamers: function(streams, settings) {
         var output = '';
         var firstGame = true;
         
         for(var game in streams){
             var isNull = game === 'null';
 
-            if(firstGame){
-                firstGame = false;
-            } else {
-                output += '<hr>';
-            }
-            output += '<div class="game-header">\n\
+            if(settings.category) {
+
+                if (firstGame) {
+                    firstGame = false;
+                } else {
+                    output += '<hr>\n';
+                }
+
+                output += '\
+                       <div class="game-header">\n\
                             <a title="' + (isNull ? 'Uncategorized' : game) + '"' + (isNull ? '' : ' href="http://www.twitch.tv/directory/game/' + encodeURIComponent(game) + '"') + '>\n\
-                                <img ' + createImg("game", "http://static-cdn.jtvnw.net/ttv-logoart/" + encodeURIComponent(game) + "-120x72.jpg") + '>\n\
+                                <div class="boxart">\n\
+                                    <img ' + createImg("game", "https://static-cdn.jtvnw.net/ttv-boxart/" + encodeURIComponent(game) + "-80x111.jpg") + '>\n\
+                                </div>\n\
                                 <div class="title">\n\
                                     <h1>' + (isNull ? 'Uncategorized' : game) + '</h1>\n\
                                 </div>\n\
                             </a>\n\
-                       </div>';
-            
+                       </div>\n';
+            }
+
             for(var i = 0; i < streams[game].length; i++){
                 var stream = streams[game][i];
                 
-                output += '<div class="channel">\n\
+                output += '\
+                           <div class="channel' + (settings.preview ? '' : ' no-preview') + '">\n\
                                 <a title="' + stream.name + '" href="' + stream.url + '">\n\
                                     <img ' + createImg("profile", stream.logo) + ' width="80" height="80">\n\
                                     <div class="info">\n\
                                         <h2>' + stream.name + '</h2>\n\
                                         <h3>' + stream.status + '</h3>\n\
-                                    </div>\n\
-                                    <img ' + createImg("preview", stream.preview) + ' width="360" height="225">\n\
+                                    </div>\n';
+
+                if(settings.preview) {
+                    output += '\
+                                    <img ' + createImg("preview", stream.preview) + ' width="360" height="225">\n';
+                }
+
+                if(settings.viewcount) {
+                    output += '\
                                     <p class="live">\n\
-                                        <img src="img/live.png">' + stream.viewers + '\n\
-                                    </p>\n\
+                                        <svg class="svg-glyph_live" height="16px" version="1.1" viewBox="0 0 16 16" width="16px" x="0px" y="0px">\n\
+                                            <path clip-rule="evenodd" d="M11,14H5H2v-1l3-3h2L5,8V2h6v6l-2,2h2l3,3v1H11z" fill="red" fill-rule="evenodd"></path>\n\
+                                        </svg>\n\
+                                        ' + formatNumber(stream.viewers) + '\n\
+                                    </p>\n';
+                }
+
+                output += '\
                                 </a>\n\
-                           </div>';
+                           </div>\n';
             }
         }
-        
-        this.loadImages();
-        document.body.innerHTML = output;
+
+        document.body.innerHTML = output + '<div id="title-resizer" class="game-header"><div class="title"><h1>Undefined</h1></div></div>';
+
+        setTimeout(function() {
+            popup.loadImages();
+            popup.fixTitles();
+        }, 0);
     },
     loadImages: function(){
-        setTimeout(function(){
-            $('img').each(function(){
-                var thisImage = this;
-                var lsrc = $(thisImage).attr('lsrc') || '';
-                
-                if(lsrc.length > 0){
-                    var img = new Image();
-                    img.src = lsrc;
-                                        
-                    $(img).load(function(){
-                        thisImage.src = this.src;
-                    });
-                    $(thisImage).removeAttr('lsrc');
-                }
-            });
-            $('.background').each(function(){
-                var thisDiv = this;
-                var lstyle = $(thisDiv).attr('lstyle') || '';
-                
-                if(lstyle.length > 0){
-                    $(thisDiv).removeAttr('lstyle');
-                    $(thisDiv).attr('style', lstyle);
-                }
-            });
-        }, 50);
+        $('img').each(function(){
+            var thisImage = this;
+            var lsrc = $(thisImage).attr('lsrc') || '';
+
+            if(lsrc.length > 0){
+                var img = new Image();
+                img.src = lsrc;
+
+                $(img).load(function(){
+                    thisImage.src = this.src;
+                });
+                $(thisImage).removeAttr('lsrc');
+            }
+        });
+        $('.background').each(function(){
+            var thisDiv = this;
+            var lstyle = $(thisDiv).attr('lstyle') || '';
+
+            if(lstyle.length > 0){
+                $(thisDiv).removeAttr('lstyle');
+                $(thisDiv).attr('style', lstyle);
+            }
+        });
+    },
+    fixTitles: function() {
+        var resizer = $('#title-resizer');
+        var titleElm = resizer.find('.title');
+        var textElm = titleElm.find('h1');
+
+        $('.title h1').each(function() {
+            var size = 28;
+
+            textElm.text($(this).text());
+
+            do {
+                textElm.css('font-size', size + 'px').css('line-height', size + 'px');
+                size--;
+            } while(titleElm.outerHeight() > 80 && size > 5);
+
+            size++;
+            $(this).css('font-size', size + 'px').css('line-height', size + 'px');
+        });
     }
 };
 
 function createImg(placeholder, link){
-    return 'src="' + chrome.extension.getURL("img/placeholder-" + placeholder + ".png") + '" lsrc="' + link + '"';
+    return 'src="' + getURL("img/placeholder-" + placeholder + ".png") + '" lsrc="' + link + '"';
+}
+
+function getURL(path) {
+    return chrome.extension.getURL(path);
+}
+
+function formatNumber(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 $(document).ready(function(){
@@ -85,10 +140,10 @@ $(document).ready(function(){
         if(chrome.extension.getBackgroundPage().streamersCount > 0) {
             popup.buildPage();
         } else {
-            document.body.innerHTML = '<p class="no-streams">Sorry, nobody is live at the moment.</p>';
+            document.body.innerHTML = '<p class="no-streams">There are no streamers live right now.</p>';
         }
     } else {
-        document.body.innerHTML = '<img src="' + chrome.extension.getURL("img/connect_dark.png") + '" class="twitch-connect" href="#" />';
+        document.body.innerHTML = '<img src="' + getURL("img/connect_dark.png") + '" class="twitch-connect" href="#" />';
 
         $('.twitch-connect').click(function() {
             chrome.extension.getBackgroundPage().twitchLogin();

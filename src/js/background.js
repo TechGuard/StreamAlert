@@ -47,9 +47,6 @@ function updateStreams(data) {
 
         if(channel['status'] == undefined){
             channel['status'] = 'No description available.';
-        } else
-        if(channel['status'].length > 67){
-            channel['status'] = channel['status'].substring(0, 64) + '...';
         }
 
         if(!newStreams[stream.game]){
