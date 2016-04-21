@@ -2,22 +2,20 @@ var popupElm = $('#popup');
 
 window.popup = {
     buildPage: function() {
-        var streams = chrome.extension.getBackgroundPage().streams;
-        var settings = {
-            preview: true,
-            category: true,
-            viewcount: true
-        };
-        popup.showStreamers(streams, settings);
+        var background = chrome.extension.getBackgroundPage();
+
+        background.getOptions(function(options) {
+            popup.showStreamers(background.streams, options);
+        });
     },
-    showStreamers: function(streams, settings) {
+    showStreamers: function(streams, options) {
         var output = '';
         var firstGame = true;
         
         for(var game in streams){
             var isNull = game === 'null';
 
-            if(settings.category) {
+            if(options.category) {
 
                 if (firstGame) {
                     firstGame = false;
@@ -42,7 +40,7 @@ window.popup = {
                 var stream = streams[game][i];
                 
                 output += '\
-                           <div class="channel' + (settings.preview ? '' : ' no-preview') + '">\n\
+                           <div class="channel' + (options.preview ? '' : ' no-preview') + '">\n\
                                 <a title="' + stream.name + '" href="' + stream.url + '">\n\
                                     <img ' + createImg("profile", stream.logo) + ' width="80" height="80">\n\
                                     <div class="info">\n\
@@ -50,12 +48,12 @@ window.popup = {
                                         <h3>' + stream.status + '</h3>\n\
                                     </div>\n';
 
-                if(settings.preview) {
+                if(options.preview) {
                     output += '\
                                     <img ' + createImg("preview", stream.preview) + ' width="360" height="225">\n';
                 }
 
-                if(settings.viewcount) {
+                if(options.viewcount) {
                     output += '\
                                     <p class="live">\n\
                                         <svg class="svg-glyph_live" height="16px" version="1.1" viewBox="0 0 16 16" width="16px" x="0px" y="0px">\n\
@@ -137,9 +135,10 @@ function formatNumber(x) {
 }
 
 $(document).ready(function(){
-    if(chrome.extension.getBackgroundPage().authenticated) {
+    var background = chrome.extension.getBackgroundPage();
 
-        if(chrome.extension.getBackgroundPage().streamersCount > 0) {
+    if(background.authenticated) {
+        if(background.streamersCount > 0) {
             popup.buildPage();
         } else {
             popupElm.html('<p class="no-streams">There are no streamers live right now.</p>');
@@ -148,7 +147,7 @@ $(document).ready(function(){
         popupElm.html('<img src="' + getURL("img/connect_dark.png") + '" class="twitch-connect" href="#" />');
 
         $('.twitch-connect').click(function() {
-            chrome.extension.getBackgroundPage().twitchLogin();
+            background.twitchLogin();
         })
     }
 });

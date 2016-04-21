@@ -109,12 +109,23 @@ function twitchLogin() {
 }
 
 // New verified session
-function verifiedSession(session){
+window.verifiedSession = function(session){
     Twitch._config.session = session;
     Twitch.events.emit('auth.login');
 
     restart();
-}
+};
+
+// Load options
+window.getOptions = function(callback) {
+    chrome.storage.sync.get({
+        category: true,
+        preview: true,
+        viewcount: true
+    }, function(options) {
+        callback(options);
+    });
+};
 
 function restart(){
     clearInterval(tickIntervalId); // clear

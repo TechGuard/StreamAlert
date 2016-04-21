@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base target="_blank">
+
+        <link rel="stylesheet" type="text/css" href="css/popup.css">
+        <link rel="stylesheet" type="text/css" href="css/options.css">
+    </head>
+    <body>
+        <div id="options">
+            <div class="left">
+                <h1 class="title">Options</h1>
+                <hr>
+
+                <div class="form-line">
+                    <label>
+                        <input type="checkbox" id="category">
+                        Display Categories
+                    </label>
+                </div>
+
+                <div class="form-line">
+                    <label>
+                        <input type="checkbox" id="preview">
+                        Show Stream Preview
+                    </label>
+                </div>
+
+                <div class="form-line">
+                    <label>
+                        <input type="checkbox" id="viewcount">
+                        Enable View Count
+                    </label>
+                </div>
+
+            </div>
+            <div class="right">
+                <h1 class="title">Preview</h1>
+                <hr>
+
+                <div class="offset-left">
+                    <div id="game" class="game-header">
+                        <a title="Category Name">
+                            <div class="boxart">
+                                <img src="img/placeholder-game.png">
+                            </div>
+                            <div class="title">
+                                <h1>Category Name</h1>
+                            </div>
+                        </a>
+                    </div>
+                    <div id="channel" class="channel">
+                        <a title="Channel Name">
+                            <img src="img/placeholder-profile.png" width="80" height="80">
+                            <div class="info">
+                                <h2>Channel Name</h2>
+                                <h3>This is the channel's description.</h3>
+                            </div>
+                            <img id="channel-preview" src="img/placeholder-preview.png" width="360" height="225">
+                            <p id="channel-live" class="live">
+                                <svg class="svg-glyph_live" height="16px" version="1.1" viewBox="0 0 16 16" width="16px" x="0px" y="0px">
+                                    <path clip-rule="evenodd" d="M11,14H5H2v-1l3-3h2L5,8V2h6v6l-2,2h2l3,3v1H11z" fill="red" fill-rule="evenodd"></path>
+                                </svg>
+                                1,234
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="js/options.js"></script>
+    </body>
+</html>

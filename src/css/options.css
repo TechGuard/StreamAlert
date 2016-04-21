@@ -1,0 +1,47 @@
+html, body {
+    margin: 0;
+    width: 700px;
+    height: 480px;
+    background: #eeeeee;
+    overflow: auto;
+}
+
+#options {
+    height: 100%;
+    position: relative;
+}
+
+#options .left {
+    width: 300px;
+    left: 0;
+    position: absolute;
+    height: 100%;
+}
+
+#options .right {
+    width: 400px;
+    right: 0;
+    position: absolute;
+    height: 100%;
+}
+
+.title {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.offset-left {
+    margin-left: 10px;
+}
+
+.form-line {
+    margin: 10px;
+    font-size: 17px;
+}
+
+.form-line .checkbox {
+    height: 16px;
+    width: 16px;
+}
