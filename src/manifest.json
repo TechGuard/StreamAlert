@@ -4,7 +4,7 @@
     "short_name": "StreamAlert",
     "author": "Robin van Nunen",
     "description": "Receive desktop notifications when a twitch streamer goes live.",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "offline_enabled": false,
 
     "icons": {

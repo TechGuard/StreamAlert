@@ -62,6 +62,8 @@ a {
 .game-header {
     width: 360px;
     height: 60px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .game-header, .channel {
@@ -76,6 +78,7 @@ a {
     height: 60px;
     float: right;
     overflow: hidden;
+    border-bottom-right-radius: 10px;
 }
 
 .game-header .title {
@@ -99,14 +102,17 @@ a {
 .channel {
     width: 360px;
     height: 305px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .channel.no-preview {
     height: 80px;
 }
 
-.channel img {
+.channel .profile {
     float: left;
+    border-top-left-radius: 10px;
 }
 
 .channel .info {
@@ -137,6 +143,10 @@ a {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.channel .preview {
+    border-bottom-right-radius: 10px;
 }
 
 .channel .live {

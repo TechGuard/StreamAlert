@@ -42,16 +42,11 @@ window.popup = {
                 output += '\
                            <div class="channel' + (options.preview ? '' : ' no-preview') + '">\n\
                                 <a title="' + stream.name + '" href="' + stream.url + '">\n\
-                                    <img ' + createImg("profile", stream.logo) + ' width="80" height="80">\n\
+                                    <img class="profile" ' + createImg("profile", stream.logo) + ' width="80" height="80">\n\
                                     <div class="info">\n\
                                         <h2>' + stream.name + '</h2>\n\
                                         <h3>' + stream.status + '</h3>\n\
                                     </div>\n';
-
-                if(options.preview) {
-                    output += '\
-                                    <img ' + createImg("preview", stream.preview) + ' width="360" height="225">\n';
-                }
 
                 if(options.viewcount) {
                     output += '\
@@ -61,6 +56,11 @@ window.popup = {
                                         </svg>\n\
                                         ' + formatNumber(stream.viewers) + '\n\
                                     </p>\n';
+                }
+
+                if(options.preview) {
+                    output += '\
+                                    <img class="preview" ' + createImg("preview", stream.preview) + ' width="360" height="225">\n';
                 }
 
                 output += '\
