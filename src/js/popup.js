@@ -27,7 +27,7 @@ window.popup = {
                        <div class="game-header">\n\
                             <a title="' + (isNull ? 'Uncategorized' : game) + '"' + (isNull ? '' : ' href="http://www.twitch.tv/directory/game/' + encodeURIComponent(game) + '"') + '>\n\
                                 <div class="boxart">\n\
-                                    <img ' + createImg("game", "https://static-cdn.jtvnw.net/ttv-boxart/" + encodeURIComponent(game) + "-80x111.jpg") + '>\n\
+                                    <img ' + createImg("game", "https://static-cdn.jtvnw.net/ttv-boxart/" + encodeURIComponent(game) + "-60x83.jpg") + ' width="60" height="83">\n\
                                 </div>\n\
                                 <div class="title">\n\
                                     <h1>' + (isNull ? 'Uncategorized' : game) + '</h1>\n\
@@ -114,7 +114,7 @@ window.popup = {
             do {
                 textElm.css('font-size', size + 'px').css('line-height', size + 'px');
                 size--;
-            } while(titleElm.outerHeight() > 80 && size > 5);
+            } while(titleElm.outerHeight() > 60 && size >= 10);
 
             size++;
             $(this).css('font-size', size + 'px').css('line-height', size + 'px');

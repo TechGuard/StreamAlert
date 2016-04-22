@@ -61,7 +61,7 @@ a {
 
 .game-header {
     width: 360px;
-    height: 80px;
+    height: 60px;
 }
 
 .game-header, .channel {
@@ -72,22 +72,22 @@ a {
 }
 
 .game-header .boxart {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     float: right;
     overflow: hidden;
 }
 
 .game-header .title {
     top: 0;
-    right: 80px;
+    right: 60px;
     padding: 8px;
     position: absolute;
 }
 
 .game-header .title h1 {
-    width: 280px;
-    height: 64px;
+    width: 300px;
+    height: 44px;
     font-size: 28px;
     line-height: 28px;
     text-align: center;
